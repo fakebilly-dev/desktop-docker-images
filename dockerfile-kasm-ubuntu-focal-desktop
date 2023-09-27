@@ -2,6 +2,9 @@ ARG BASE_TAG="20.04-core"
 ARG BASE_IMAGE="fakebilly/ubuntu"
 FROM $BASE_IMAGE:$BASE_TAG
 
+### Labels
+LABEL "org.opencontainers.image.authors"='Fake Billy'
+
 USER root
 
 ENV HOME /home/kasm-default-profile
@@ -40,15 +43,15 @@ RUN \
   done && \
   $STARTUPDIR/set_user_permission.sh $HOME && \
   rm -f /etc/X11/xinit/Xclients && \
-  chown 1000:0 $HOME && \
+  chown $KASM_USER:$KASM_USER $HOME && \
   mkdir -p /home/$KASM_USER && \
-  chown -R 1000:0 /home/$KASM_USER && \
+  chown -R $KASM_USER:$KASM_USER /home/$KASM_USER && \
   rm -Rf ${INST_DIR}
 
 # Userspace Runtime
 ENV HOME /home/$KASM_USER
 WORKDIR $HOME
-USER 1000
+USER $KASM_USER
 
 CMD ["--tail-log"]
 

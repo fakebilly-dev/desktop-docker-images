@@ -1,9 +1,6 @@
-name: Docker Workflow
+name: Ubuntu Desktop Docker Workflow
 
 on:
-  push:
-    branches:
-      - 'feature/ubuntu20.04'
   workflow_dispatch:
 
 env:
@@ -13,7 +10,7 @@ env:
 
 jobs:
   build:
-    name: Docker Build
+    name: Desktop Ubuntu Image Build
     runs-on: ubuntu-20.04
 
     steps:
@@ -38,9 +35,11 @@ jobs:
           push: true
           tags: ${{ env.DOCKERHUB_IMAGE }}
 
-      - name: Tag and Push Docker images
+      - name: Tag and Push and Remove Docker images
         run: |
           docker tag ${{ env.DOCKERHUB_IMAGE }} ${{ env.ALI_DOCKERHUB_REGISTRY }}/${{ env.ALI_DOCKERHUB_IMAGE }}
           docker login -u ${{ secrets.ALI_DOCKERHUB_USERNAME }} -p ${{ secrets.ALI_DOCKERHUB_TOKEN }} ${{ env.ALI_DOCKERHUB_REGISTRY }}
           docker push ${{ env.ALI_DOCKERHUB_REGISTRY }}/${{ env.ALI_DOCKERHUB_IMAGE }}
           docker logout ${{ env.ALI_DOCKERHUB_REGISTRY }}
+          docker rmi ${{ env.ALI_DOCKERHUB_REGISTRY }}/${{ env.ALI_DOCKERHUB_IMAGE }}
+          docker rmi ${{ env.DOCKERHUB_IMAGE }}

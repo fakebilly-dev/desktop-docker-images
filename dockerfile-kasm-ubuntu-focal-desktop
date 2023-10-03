@@ -3,7 +3,8 @@ ARG BASE_IMAGE="fakebilly/ubuntu"
 FROM $BASE_IMAGE:$BASE_TAG
 
 ### Labels
-LABEL "org.opencontainers.image.authors"='Fake Billy'
+LABEL maintainer="fakebilly.work@outlook.com"
+LABEL org.opencontainers.image.authors="FakeBilly"
 
 USER root
 

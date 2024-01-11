@@ -1,4 +1,4 @@
-name: Ubuntu Desktop Docker Workflow
+name: Ubuntu Workshop Image Desktop Workflow
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-    name: Desktop Ubuntu Image Build
+    name: Ubuntu Workshop Image Desktop Docker Build
     runs-on: ubuntu-20.04
 
     steps:
@@ -60,4 +60,7 @@ jobs:
           docker tag ${{ env.DOCKERHUB_IMAGE }} ${{ secrets.ALI_DOCKERHUB_REGISTRY }}/${{ env.ALI_DOCKERHUB_IMAGE }}
           docker push ${{ secrets.ALI_DOCKERHUB_REGISTRY }}/${{ env.ALI_DOCKERHUB_IMAGE }}
           docker rmi ${{ secrets.ALI_DOCKERHUB_REGISTRY }}/${{ env.ALI_DOCKERHUB_IMAGE }}
+
+      - name: Remove Docker image
+        run: |
           docker rmi ${{ env.DOCKERHUB_IMAGE }}
